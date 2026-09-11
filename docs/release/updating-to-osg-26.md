@@ -7,6 +7,10 @@ Updating to OSG 26
 required to upgrade from OSG 25 are relatively minor.
 Please update all services to OSG 26 as soon as possible.
 
+!!! note "Updating from OSG <25"
+    Instructions in this document pertain to updating from OSG 25 to OSG 26. If you are updating from OSG 24,
+    see [Updating to OSG 25](../updating-to-osg-25)
+
 Updating the OSG Repositories
 -----------------------------
 

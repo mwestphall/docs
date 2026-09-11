@@ -7,6 +7,9 @@ This document describes how to install an Open Science Data Federation (OSDF) Ca
 This service allows a site or regional network to cache data frequently used in Open Science Pool jobs,
 reducing data transfer over the wide-area network and increasing throughput to jobs.
 
+!!! tip "Upgrading from OSG 24?"
+    Pelican configuration semantics changed between OSG 24 and OSG 25.
+    See [Updating to OSG 25](../../../release/updating-to-osg-25) for more details.
 
 Before Starting
 ---------------

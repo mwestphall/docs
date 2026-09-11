@@ -3,9 +3,9 @@ title: Installing the OSDF Origin by RPM
 Installing the OSDF Origin by RPM
 =================================
 
-!!! tip "Upgrading from a non-Pelican origin?"
-    This installation guide also walks you through upgrading an origin that you installed prior to OSG 24.
-    See [this section](#upgrading-a-non-pelican-origin) for more details.
+!!! tip "Upgrading from OSG 24?"
+    Pelican configuration semantics changed between OSG 24 and OSG 25.
+    See [Updating to OSG 25](../../../release/updating-to-osg-25) for more details.
 
 This document describes how to install an Open Science Data Federation (OSDF) Origin service via RPMs.
 This service, based on the [Pelican Platform](https://docs.pelicanplatform.org/federating-your-data), allows an
@@ -43,13 +43,6 @@ As with all OSG software installations, there are some one-time steps to prepare
 * Prepare [the required Yum repositories](../../common/yum.md);
   the [OSG 26 repositories](../../common/yum.md#install-the-osg-repositories) should be used.
 
-    !!! danger "Upgrading to a Pelican origin"
-        If you are upgrading from a pre-Pelican OSDF origin, update all of your OSG 23 packages before installing the OSG 26
-        repositories:
-
-            :::console
-            root@host # yum update
-
 !!! note "Host certificates"
     Origins are accessed by users through browsers, meaning origins need a certificate from a CA acceptable to a standard browser.
     Examples include [Let's Encrypt](../../security/host-certs/lets-encrypt.md) or the InCommon RSA CA.
@@ -66,30 +59,8 @@ Upgrading a Non-Pelican Origin
 ------------------------------
 
 If you are running a non-Pelican origin, e.g. one that was installed before OSG 24, there are special considerations for
-the upgrade to ensure minimal downtime for your users.
-This document will guide you through the upgrade process by installing and configuring a Pelican origin alongside your
-non-Pelican origin.
-
-!!! note "Using different hosts"
-    You may install your new Pelican origin on a separate host if your underlying data store is shared between hosts.
-
-First, determine if you have an active non-Pelican origin service running:
-
-```console
-user@host $ systemctl status xrootd@stash-origin-auth \
-                             xrootd@stash-origin \
-                             xrootd-privileged@stash-origin-auth \
-            | grep -F 'Active: active'
-   Active: active (running) since Wed 2024-12-04 17:46:17 CST; 1 weeks 1 days ago
-```
-
-*   **If you do not see any output from the above command**, you may proceed with the rest of the documentation.
-
-*   **If you see any output from the above command**, you may proceed with the rest of the documentation but keep an eye
-    out for special instructions related to the upgrade:
-
-    !!! danger "Upgrading to a Pelican origin"
-        You will find upgrade-specific instructions here.
+the upgrade to ensure minimal downtime for your users. Please reach out to [help@osg-htc.org](mailto:help@osg-htc.org)
+for assistance.
 
 Installing the Origin
 ---------------------
@@ -201,11 +172,6 @@ Do the following steps to verify that the origin is functional:
 Joining the Origin to the Federation
 ------------------------------------
 
-!!! danger "Upgrading to a Pelican origin"
-    Once registered, all OSDF clients of your namespace will be directed to your Pelican origin.
-    Before initiating this process, ensure that your Pelican origin is functioning and that you are ready to migrate
-    production transfers.
-
 The origin must be registered with the OSG prior to joining the data federation.
 Send mail to <help@osg-htc.org> requesting registration; provide the following information:
 
@@ -265,12 +231,6 @@ Once your origin has been registered in the federation:
     Replacing `<TEST PATH>` with the same path that you used in step (1) or (2).
     If you see output, then the OSDF is directing client requests to your Pelican origin!
     If you do not see output, please [contact us](#getting-help).
-
-!!! danger "Upgrading to a Pelican origin"
-    Congratulations, you have fully verified the functionality of your Pelican origin!
-    You may uninstall the non-Pelican origin:
-    
-        root@host $ yum remove stash-origin
 
 Managing the Origin Service
 ---------------------------
