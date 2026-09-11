@@ -3,9 +3,6 @@ title: Installing the OSDF Origin by RPM
 Installing the OSDF Origin by RPM
 =================================
 
-!!! warning "OSG 24+"
-    This installation guide requires OSG 24 or OSG 25
-
 !!! tip "Upgrading from a non-Pelican origin?"
     This installation guide also walks you through upgrading an origin that you installed prior to OSG 24.
     See [this section](#upgrading-a-non-pelican-origin) for more details.
@@ -21,7 +18,6 @@ Before Starting
 Before starting the installation process, consider the following requirements:
 
 * __Operating system:__ A RHEL 8, RHEL 9, RHEL 10, or [compatible operating system](../../release/supported_platforms.md).
-  (RHEL 10 is not supported in OSG 24.)
 * __User IDs:__ If it does not exist already, the installation will create the Linux user named `xrootd` for running daemons.
 * __Host certificate:__ Required for authentication.  See note below.
 * __Network ports:__ The origin service requires the following ports open:
@@ -45,10 +41,10 @@ As with all OSG software installations, there are some one-time steps to prepare
 
 * Obtain root access to the host
 * Prepare [the required Yum repositories](../../common/yum.md);
-  the [OSG 25 repositories](../../common/yum.md#install-the-osg-repositories) should be used.
+  the [OSG 26 repositories](../../common/yum.md#install-the-osg-repositories) should be used.
 
     !!! danger "Upgrading to a Pelican origin"
-        If you are upgrading from a pre-Pelican OSDF origin, update all of your OSG 23 packages before installing the OSG 25
+        If you are upgrading from a pre-Pelican OSDF origin, update all of your OSG 23 packages before installing the OSG 26
         repositories:
 
             :::console
@@ -61,16 +57,10 @@ As with all OSG software installations, there are some one-time steps to prepare
     Note that, unlike legacy grid software, the public certificate file will need to contain the "full chain", including any
     intermediate CAs (if you're unsure about your setup, try accessing your origin from your browser).
     
-    In OSG 25, the following locations should be used:
+    The following locations should be used:
 
     * **Host Certificate Chain**: `/etc/pelican/certificates/tls.crt`
     * **Host Key**: `/etc/pelican/certificates/tls.key`
-    
-    In OSG 24, the following locations should be used
-    (note that they are in separate directories):
-
-    * **Host Certificate Chain**: `/etc/pki/tls/certs/pelican.crt`
-    * **Host Key**: `/etc/pki/tls/private/pelican.key`
 
 Upgrading a Non-Pelican Origin
 ------------------------------
@@ -104,20 +94,12 @@ user@host $ systemctl status xrootd@stash-origin-auth \
 Installing the Origin
 ---------------------
 
-In OSG 25, the origin service is provided by the `osdf-server` RPM.
+The origin service is provided by the `osdf-server` RPM.
 Install it via the following command:
 
 ```console
 root@host # yum install osdf-server
 ```
-
-In OSG 24, the origin service is provided by the `osdf-origin` RPM.
-Install it via the following command:
-
-```console
-root@host # yum install osdf-origin
-```
-
 
 Configuring the Origin Server
 -----------------------------
@@ -186,15 +168,9 @@ Do the following steps to verify that the origin is functional:
 
 1.  Start the origin using one of the following commands:
 
-    OSG 25:
-
         :::console
         root@host$ systemctl start pelican-origin
 
-    OSG 24:
-
-        :::console
-        root@host$ systemctl start osdf-origin
 
 1.  Download a test file (POSIX) or object (S3) from your origin (replacing `ORIGIN_HOSTNAME` with the host name of your origin,
     and TEST_PATH with the OSDF path to the test file or object
@@ -208,8 +184,7 @@ Do the following steps to verify that the origin is functional:
 
     If the download fails, rerun the above `pelican object get` command with the `-d` flag added.
 
-    In OSG 25, additional debugging information is located in `/var/log/pelican/pelican-origin.log`.<br>
-    In OSG 24, additional debugging information is located in `/var/log/pelican/osdf-origin.log`.
+    Additional debugging information is located in `/var/log/pelican/pelican-origin.log`.<br>
 
     To increase the debugging information in the log file, edit your origin configuration file and set:
     ```
@@ -246,17 +221,12 @@ XRootD:
   Sitename: <RESOURCE NAME REGISTERED WITH OSG>
 ```
 
-Then, restart the origin by running one of the following commands:
+Then, restart the origin by running the following command:
 
-OSG 25:
 ```console
 root@host$ systemctl restart pelican-origin
 ```
 
-OSG 24:
-```console
-root@host$ systemctl restart osdf-origin
-```
 
 Validating the Origin Through the Federation
 --------------------------------------------
@@ -289,15 +259,8 @@ Once your origin has been registered in the federation:
 
 1.  Verify that your test is running against your Pelican origin:
 
-    In OSG 25:
-
         :::console
         user@host $ grep <TEST_PATH> /var/log/pelican/pelican-origin.log
-
-    In OSG 24:
-        
-        :::console
-        user@host $ grep <TEST_PATH> /var/log/pelican/osdf-origin.log
 
     Replacing `<TEST PATH>` with the same path that you used in step (1) or (2).
     If you see output, then the OSDF is directing client requests to your Pelican origin!
@@ -313,24 +276,12 @@ Managing the Origin Service
 ---------------------------
 Use the following SystemD commands as root to start, stop, enable, and disable the OSDF Origin.
 
-OSG 25:
-
 | To...                                    | Run the command...                 |
 | :--------------------------------------- | :--------------------------------- |
 | Start the origin                         | `systemctl start pelican-origin`   |
 | Stop the origin                          | `systemctl stop pelican-origin`    |
 | Enable the origin to start on boot       | `systemctl enable pelican-origin`  |
 | Disable the origin from starting on boot | `systemctl disable pelican-origin` |
-
-OSG 24:
-
-| To...                                    | Run the command...                 |
-| :--------------------------------------- | :--------------------------------- |
-| Start the origin                         | `systemctl start osdf-origin`      |
-| Stop the origin                          | `systemctl stop osdf-origin`       |
-| Enable the origin to start on boot       | `systemctl enable osdf-origin`     |
-| Disable the origin from starting on boot | `systemctl disable osdf-origin`    |
-
 
 Getting Help
 ------------
