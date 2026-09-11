@@ -26,10 +26,3 @@ Updates to critical packages are also announced by email and are sent to the fol
 
 Latest News
 -----------
-
-**TODO:** Initial Release
--------------------------------------
-
-This initial release contains the following notable changes compared to the current OSG 25 release in [main](../common/yum.md):
-
-# TODO
